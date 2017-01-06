@@ -21,24 +21,32 @@
   function chatBoardUIController($scope) {
     var vm = this;
     vm.title = 'chat';
-    vm.newMsg = '';
+    vm.txtMsg = '';
+    vm.imgMsg = '';
     vm.sender = $scope.chatContext.sender;
     vm.members = $scope.chatContext.members;
     vm.msgList = [];
     vm.historyMsgList = [];
     vm.hasHistoryMsg = false;
-    vm.send = sendMsg;
+    vm.sendTextMsg = sendTextMsg;
+    vm.sendImgMsg = sendImgMsg;
     init();
 
 
     var conversationAPI;
 
     function init() {
+      // 初始化存储 SDK
+      AV.init({
+        appId: 'a7722WJjRqpbSOQprmljvReW-gzGzoHsz', 
+        appKey:'iI054CAWE8107qrX5m4aiXnX',
+      });
+
       var Realtime = AV.Realtime;
-      var TextMessage = AV.TextMessage;
       var realtime = new Realtime({
         appId: 'a7722WJjRqpbSOQprmljvReW-gzGzoHsz',
         region: 'cn', //美国节点为 "us"
+        plugins: [AV.TypedMessagesPlugin], // 注册富媒体消息插件
       });
 
       // Tom 用自己的名字作为 clientId，获取 IMClient 对象实例
@@ -70,18 +78,34 @@
       });
     }
 
-    function sendMsg() {
+    function sendTextMsg() {
       // send 
-      if (vm.newMsg === '') {
+      if (vm.txtMsg === '') {
         return;
       }
-      conversationAPI.send(new AV.TextMessage(vm.newMsg)).then(function(message) {
-        console.log('Message sent: ', vm.newMsg, ' from ' + vm.sender);
-        vm.newMsg = '';
+      conversationAPI.send(new AV.TextMessage(vm.txtMsg)).then(function(message) {
+        console.log(vm.sender + ' send Message: ' + vm.txtMsg);
+        vm.txtMsg = '';
         $scope.$apply(function() {
           vm.msgList.push(composeMsg(message));
         });
       }).catch(console.error);
+    }
+
+    function sendImgMsg() {
+      // send 
+      if (vm.imgMsg === '') {
+        return;
+      }
+
+      var file = new AV.File.withURL('萌妹子', 'http://pic2.zhimg.com/6c10e6053c739ed0ce676a0aff15cf1c.gif');
+      file.save().then(function() {
+        var message = new AV.ImageMessage(file);
+        message.setText('萌妹子一枚');
+        return conversationAPI.send(message);
+      }).then(function() {
+        console.log('发送成功');
+      }).catch(console.error.bind(console));
     }
 
     function receiveMsg(message, conversation) {

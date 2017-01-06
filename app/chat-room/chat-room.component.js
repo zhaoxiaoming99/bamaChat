@@ -36,7 +36,10 @@
         return;
       }      
       vm.chatContext.sender = vm.sender;
-      vm.chatContext.members = vm.members;
+      vm.chatContext.members = angular.copy(vm.members);
+      if (vm.chatContext.members.indexOf(vm.sender) === -1) {
+        vm.chatContext.members.push(vm.sender);
+      }
       vm.isReady = true;
     }
   } //chatRoomController

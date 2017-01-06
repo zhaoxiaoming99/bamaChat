@@ -13,6 +13,7 @@
     "angular-route": "1.5.x",
     "bootstrap": "3.3.x",
     "jquery": "2.2.x",
-    "leancloud-realtime": "^v3.3.3"
+    "leancloud-realtime": "^v3.3.3",
+    "leancloud-storage": "^v1.5.3"
   }
 }

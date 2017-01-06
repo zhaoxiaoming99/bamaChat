@@ -11,7 +11,8 @@
 	<div ng-repeat="msg in vm.msgList">
 		<div class="message-base" ng-class="{'message-receiver': msg.isReceiver}">{{msg.text}}</div>
 	</div>
-	<input type="text" style="width: 100%;" ng-model='vm.newMsg' required ng-trim='true' ng-keyup='$event.keyCode == 13 && vm.send()' />
+	<input type="text" style="width: 100%;" ng-model='vm.txtMsg' required ng-trim='true' ng-keyup='$event.keyCode == 13 && vm.sendTextMsg()' />
+	<!-- <input type="text" style="width: 100%;" ng-model='vm.imgMsg' required ng-trim='true' ng-keyup='$event.keyCode == 13 && vm.sendImgMsg()' /> -->
 	<!-- <input type="button" value="Send" ng-click='vm.send()' > -->
 </div>
 

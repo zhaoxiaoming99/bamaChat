@@ -1,10 +1,10 @@
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-1">
+		<div class="col-md-2">
 			<label for="senderSelect"> 你是谁: </label>
 		</div>
 		<div>
-			<select name="senderSelect" id="senderSelect" ng-model="vm.sender">
+			<select name="senderSelect" id="senderSelect" ng-model="vm.chatContext.sender">
 		      <option value="">---Please select---</option> <!-- not selected / blank option -->
 		      <option value="Tod">Tod</option>
 		      <option value="Judy">Judy</option>
@@ -12,25 +12,25 @@
 		      <option value="Amos">Amos</option>
 		    </select>
 		</div>	    
-	</div>
+	</div>	
 	<div class="row">
-		<div class="col-md-1">
-			<label for="receiverSelect"> 找谁聊天: </label>
+		<div class="col-md-2">
+			<label>{{vm.unreadMsgConversationList.length}}个未读消息会话</label>
 		</div>
 		<div>
-			<select name="receiverSelect" id="receiverSelect" ng-model="vm.receiver">
-		      <option value="">---Please select---</option> <!-- not selected / blank option -->
-		      <option value="Tod">Tod</option>
-		      <option value="Judy">Judy</option>
-		      <option value="Xiaoming">Xiaoming</option>
-		      <option value="Amos">Amos</option>
+			<select ng-model="vm.selectedConversationId">
+			  <option value="">---Please select---</option> <!-- not selected / blank option -->
+		      <option ng-repeat="option in vm.unreadMsgConversationList" value="{{option.conversationId}}">{{option.displayText}}</option>
 		    </select>
 		</div>		
 	</div>
 	<div class="row">
-		<input type='button' value="开始吧！" ng-click='vm.startChat();'> 
-		<br>
-		谁在聊: {{vm.chatContext}} | 开始: {{vm.isReady}}
+		<div class="col-md-4">
+			<br>
+			<input type='button' value="开始吧！" ng-click='vm.startChat();'> 
+			<br>
+			谁在聊: {{vm.chatContext}} | 开始: {{vm.isReady}}
+		</div>
 	</div>
 </div>
 <hr>

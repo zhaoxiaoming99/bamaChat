@@ -19,23 +19,28 @@
     var vm = this;
     vm.startChat = startChat;    
     vm.chatContext = {};
-    vm.chatContext.sender = 'Xiaoming';
-    vm.chatContext.receiver = 'Judy';
+    vm.sender = 'Xiaoming';
+    vm.receiver = 'Judy';
     vm.isReady = false;
 
 
-    $scope.$watch('vm.chatContext', function() {
+    $scope.$watch('vm.sender', function() {
+      vm.isReady = false;
+    }, true);
+    $scope.$watch('vm.receiver', function() {
       vm.isReady = false;
     }, true);
 
     function startChat(){
-      if (vm.chatContext.sender === '' || vm.chatContext.receiver === '') {
+      if (vm.sender === '' || vm.receiver === '') {
         return;
       }
-      if (vm.chatContext.sender === vm.chatContext.receiver) {
+      if (vm.sender === vm.receiver) {
         alert('发信人和收信人不能是同一个人！');
         return;
       }
+      vm.chatContext.sender = vm.sender;
+      vm.chatContext.members = [vm.sender, vm.receiver];
       vm.isReady = true;
     }
   } //singleChatController

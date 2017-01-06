@@ -21,8 +21,9 @@
   function chatBoardUIController($scope) {
     var vm = this;
     vm.title = 'chat';
+    vm.newMsg = '';
     vm.sender = $scope.chatContext.sender;
-    vm.receiver = $scope.chatContext.receiver;
+    vm.members = $scope.chatContext.members;
     vm.msgList = [];
     vm.historyMsgList = [];
     vm.hasHistoryMsg = false;
@@ -46,8 +47,8 @@
         clientObj.on('message', receiveMsg);
         // 创建与Jerry之间的对话
         return clientObj.createConversation({
-          members: [vm.receiver],
-          name: 'Tom & Jerry',
+          members: vm.members,
+          name: vm.members.join(" & "),
           transient: false,
           unique: true
         });
@@ -58,7 +59,7 @@
           limit: 10, // limit 取值范围 1~1000，默认 20
         }).then(function(messages) {
           // 最新的十条消息，按时间增序排列
-          console.log(messages);
+          console.log('最新的十条消息，按时间增序排列：', messages);
           $scope.$apply(function() {
             for (var i = 0; i < messages.length; i++) {
               vm.historyMsgList.push(composeMsg(messages[i], vm.sender));
@@ -71,6 +72,9 @@
 
     function sendMsg() {
       // send 
+      if (vm.newMsg === '') {
+        return;
+      }
       conversationAPI.send(new AV.TextMessage(vm.newMsg)).then(function(message) {
         console.log('Message sent: ', vm.newMsg, ' from ' + vm.sender);
         vm.newMsg = '';

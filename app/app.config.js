@@ -10,6 +10,9 @@ angular.
         when('/single', {
           template: '<single-chat></single-chat>'
         }).
+        when('/unreadmessages', {
+          template: '<unread-messages></unread-messages>'
+        }).
         otherwise('/single');
     }
   ]);

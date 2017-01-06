@@ -5,7 +5,8 @@
 	angular.module('bamaChat', [
 		'ngAnimate',
 		'ngRoute',
-		'singleChat'
+		'singleChat',
+		'unreadMessages'
 	]);
 
 })();

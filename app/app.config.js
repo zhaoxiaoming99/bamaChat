@@ -13,6 +13,9 @@ angular.
         when('/unreadmessages', {
           template: '<unread-messages></unread-messages>'
         }).
+        when('/chatroom', {
+          template: '<chat-room></chat-room>'
+        }).
         otherwise('/single');
     }
   ]);

@@ -6,7 +6,8 @@
 		'ngAnimate',
 		'ngRoute',
 		'singleChat',
-		'unreadMessages'
+		'unreadMessages',
+		'chatRoom'
 	]);
 
 })();

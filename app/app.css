@@ -5,6 +5,11 @@ body {
 .chatWith {
   font-weight: bold;
 }
+.message-tips{
+  width: 100%;
+  text-align: center;
+  color: grey;
+}
 .message-base {
   padding: 3px 10px;
   color: blue;  

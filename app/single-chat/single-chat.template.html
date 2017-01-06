@@ -1,0 +1,9 @@
+<div>
+	{{vm.tomName}}: <input type="checkbox" ng-model="vm.showTom"> 
+	&nbsp;&nbsp;
+	{{vm.jerryName}}: <input type="checkbox" ng-model="vm.showJerry">
+</div>
+<div ng-if='vm.showTom' style="float: left;width: 100%;">
+	<chat-board-ui chat-context="vm.tomContext" /></div>
+<div ng-if='vm.showJerry' style="float: right;width: 100%;">
+	<chat-board-ui chat-context="vm.jerryContext" /></div>

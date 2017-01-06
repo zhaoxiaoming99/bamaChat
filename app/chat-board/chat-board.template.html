@@ -3,6 +3,13 @@
 
 	<p class="chatWith">我正在跟: {{vm.receiver}} 聊天</p>
 
+	<div>
+		<p class='message-tips'>历史消息</p>
+		<div ng-repeat="msg in vm.historyMsgList">
+			<div class="message-base" ng-class="{'message-receiver': msg.isReceiver}">{{msg.text}}</div>
+		</div>
+		<p class='message-tips'>华丽的分割线</p>
+	</div>
 	<div ng-repeat="msg in vm.msgList">
 		<div class="message-base" ng-class="{'message-receiver': msg.isReceiver}">{{msg.text}}</div>
 	</div>

@@ -24,6 +24,8 @@
     vm.sender = $scope.chatContext.sender;
     vm.receiver = $scope.chatContext.receiver;
     vm.msgList = [];
+    vm.historyMsgList = [];
+    vm.hasHistoryMsg = false;
     vm.send = sendMsg;
     init();
 
@@ -57,10 +59,12 @@
         }).then(function(messages) {
           // 最新的十条消息，按时间增序排列
           console.log(messages);
-          for (var i = 0; i < messages.length; i++) {
-            vm.msgList.push(composeMsg(messages[i], vm.sender));
-          }
-          $scope.$apply();
+          $scope.$apply(function() {
+            for (var i = 0; i < messages.length; i++) {
+              vm.historyMsgList.push(composeMsg(messages[i], vm.sender));
+              vm.hasHistoryMsg = true;
+            }
+          });
         }).catch(console.error.bind(console));
       });
     }
@@ -69,9 +73,10 @@
       // send 
       conversationAPI.send(new AV.TextMessage(vm.newMsg)).then(function(message) {
         console.log('Message sent: ', vm.newMsg, ' from ' + vm.sender);
-        vm.msgList.push(composeMsg(message));
         vm.newMsg = '';
-        $scope.$apply();
+        $scope.$apply(function() {
+          vm.msgList.push(composeMsg(message));
+        });
       }).catch(console.error);
     }
 

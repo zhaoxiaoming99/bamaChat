@@ -16,15 +16,28 @@
    
     <!-- chat-board -->
     <script src="app.module.js"></script>
+    <script src="app.config.js"></script>
+    <script src="single-chat/single-chat.module.js"></script>
+    <script src="single-chat/single-chat.component.js"></script>
     <script src="chat-board/chat-board.module.js"></script>
     <script src="chat-board/chat-board.component.js"></script>
   </head>
   <body ng-app="bamaChat">
-
-    <div ng-controller="appController as vm">
-        <div>{{vm.tomName}}: <input type="checkbox" ng-model="vm.showTom"> &nbsp;&nbsp;{{vm.jerryName}}: <input type="checkbox" ng-model="vm.showJerry"></div>
-        <div ng-if='vm.showTom' style="float: left;width: 100%;"><chat-board-ui chat-context="vm.tomContext" /></div>
-        <div ng-if='vm.showJerry' style="float: right;width: 100%;"><chat-board-ui chat-context="vm.jerryContext" /></div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-4">
+            <a href="#!/single">one-one chat</a>
+        </div>
+        <div class="col-md-4">
+            <a href="#!/chatroom">chat-room</a>
+        </div>
+        <div class="col-md-4">
+            <a href="#!/service">I'm Health-Manager</a>
+        </div>
+      </div>
+    </div>
+    <div class="view-container">
+      <div ng-view class="view-frame"></div>
     </div>
 
   </body>

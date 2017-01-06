@@ -17,18 +17,26 @@
 
   function singleChatController($scope) {
     var vm = this;
-    vm.tomName = 'Xiaoming';
-    vm.jerryName = 'Judy';
-    vm.tomContext = {};
-    vm.jerryContext = {};
+    vm.startChat = startChat;    
+    vm.chatContext = {};
+    vm.chatContext.sender = 'Xiaoming';
+    vm.chatContext.receiver = 'Judy';
+    vm.isReady = false;
 
-    vm.tomContext.sender = vm.tomName;
-    vm.tomContext.receiver = vm.jerryName;
-    vm.showTom = true;
 
-    vm.jerryContext.sender = vm.jerryName;
-    vm.jerryContext.receiver = vm.tomName;
-    vm.showJerry = true;
-    
+    $scope.$watch('vm.chatContext', function() {
+      vm.isReady = false;
+    }, true);
+
+    function startChat(){
+      if (vm.chatContext.sender === '' || vm.chatContext.receiver === '') {
+        return;
+      }
+      if (vm.chatContext.sender === vm.chatContext.receiver) {
+        alert('发信人和收信人不能是同一个人！');
+        return;
+      }
+      vm.isReady = true;
+    }
   } //singleChatController
 })();

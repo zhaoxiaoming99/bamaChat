@@ -1,9 +1,41 @@
-<div>
-	{{vm.tomName}}: <input type="checkbox" ng-model="vm.showTom"> 
-	&nbsp;&nbsp;
-	{{vm.jerryName}}: <input type="checkbox" ng-model="vm.showJerry">
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-1">
+			<label for="senderSelect"> 你是谁: </label>
+		</div>
+		<div>
+			<select name="senderSelect" id="senderSelect" ng-model="vm.chatContext.sender">
+		      <option value="">---Please select---</option> <!-- not selected / blank option -->
+		      <option value="Tod">Tod</option>
+		      <option value="Judy">Judy</option>
+		      <option value="Xiaoming">Xiaoming</option>
+		      <option value="Amos">Amos</option>
+		    </select>
+		</div>	    
+	</div>
+	<div class="row">
+		<div class="col-md-1">
+			<label for="receiverSelect"> 找谁聊天: </label>
+		</div>
+		<div>
+			<select name="receiverSelect" id="receiverSelect" ng-model="vm.chatContext.receiver">
+		      <option value="">---Please select---</option> <!-- not selected / blank option -->
+		      <option value="Tod">Tod</option>
+		      <option value="Judy">Judy</option>
+		      <option value="Xiaoming">Xiaoming</option>
+		      <option value="Amos">Amos</option>
+		    </select>
+		</div>		
+	</div>
+	<div class="row">
+		<input type='button' value="开始吧！" ng-click='vm.startChat();'> 
+		<br>
+		谁在聊: {{vm.chatContext}} | 开始: {{vm.isReady}}
+	</div>
 </div>
-<div ng-if='vm.showTom' style="float: left;width: 100%;">
-	<chat-board-ui chat-context="vm.tomContext" /></div>
+<hr>
+<chat-board-ui chat-context="vm.chatContext" ng-if='vm.isReady'>
+<!-- <div ng-if='vm.showTom' style="float: left;width: 100%;">
+	<chat-board-ui chat-context="vm.chatContext" /></div>
 <div ng-if='vm.showJerry' style="float: right;width: 100%;">
-	<chat-board-ui chat-context="vm.jerryContext" /></div>
+	<chat-board-ui chat-context="vm.jerryContext" /></div> -->

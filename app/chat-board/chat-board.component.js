@@ -21,6 +21,7 @@
   function chatBoardUIController($scope) {
     var vm = this;
     vm.title = 'chat';
+    vm.apiNotReady = true; // if the leancloud API is ready to send message
     vm.txtMsg = '';
     vm.imgMsg = '';
     vm.sender = $scope.chatContext.sender;
@@ -38,8 +39,8 @@
     function init() {
       // 初始化存储 SDK
       AV.init({
-        appId: 'a7722WJjRqpbSOQprmljvReW-gzGzoHsz', 
-        appKey:'iI054CAWE8107qrX5m4aiXnX',
+        appId: 'a7722WJjRqpbSOQprmljvReW-gzGzoHsz',
+        appKey: 'iI054CAWE8107qrX5m4aiXnX',
       });
 
       var Realtime = AV.Realtime;
@@ -63,14 +64,15 @@
       }).then(function(conversation) {
         // 发送消息API
         conversationAPI = conversation;
-        conversation.queryMessages({
-          limit: 10, // limit 取值范围 1~1000，默认 20
+        vm.apiNotReady = false;
+        conversationAPI.queryMessages({
+          limit: 20, // limit 取值范围 1~1000，默认 20
         }).then(function(messages) {
           // 最新的十条消息，按时间增序排列
           console.log('最新的十条消息，按时间增序排列：', messages);
           $scope.$apply(function() {
             for (var i = 0; i < messages.length; i++) {
-              vm.historyMsgList.push(composeMsg(messages[i], vm.sender));
+              vm.historyMsgList.push(composeMsg(messages[i]));
               vm.hasHistoryMsg = true;
             }
           });
@@ -98,28 +100,66 @@
         return;
       }
 
-      var file = new AV.File.withURL('萌妹子', 'http://pic2.zhimg.com/6c10e6053c739ed0ce676a0aff15cf1c.gif');
+      var file = new AV.File.withURL('百度', 'http://img0.bdstatic.com/static/searchresult/img/logo-2X_b99594a.png');
       file.save().then(function() {
         var message = new AV.ImageMessage(file);
-        message.setText('萌妹子一枚');
+        message.setText('百度logo');
         return conversationAPI.send(message);
       }).then(function() {
         console.log('发送成功');
+        vm.imgMsg = '';
       }).catch(console.error.bind(console));
     }
 
     function receiveMsg(message, conversation) {
-      console.log('Message received: ', message.text, ' by ' + vm.sender);
-      vm.msgList.push(composeMsg(message));
-      $scope.$apply();
+      $scope.$apply(function() {
+        vm.msgList.push(composeMsg(message));
+      });
     }
 
     function composeMsg(message) {
-      var msg = {};
+      var msg = {
+        hasImage: false
+      };
       msg.id = message.id;
       msg.from = message.from;
-      msg.text = msg.from + ' said:' + message.text;
       msg.isReceiver = !(msg.from === vm.sender);
+      msg.text = msg.from + ' said:' + message.text;
+
+      var file;
+      switch (message.type) {
+        case AV.TextMessage.TYPE:
+          console.log('收到文本消息， text: ' + message.getText() + ', msgId: ' + message.id);
+          break;
+        case AV.FileMessage.TYPE:
+          file = message.getFile(); // file 是 AV.File 实例
+          console.log('收到文件消息，url: ' + file.url() + ', size: ' + file.metaData('size'));
+          break;
+        case AV.ImageMessage.TYPE:
+          file = message.getFile();
+          console.log('收到图片消息，url: ' + file.url() + ', width: ' + file.metaData('width'));
+          msg.messageImageUrl = file.url();
+          msg.hasImage = true;
+          break;
+        case AV.AudioMessage.TYPE:
+          file = message.getFile();
+          console.log('收到音频消息，url: ' + file.url() + ', width: ' + file.metaData('duration'));
+          break;
+        case AV.VideoMessage.TYPE:
+          file = message.getFile();
+          console.log('收到视频消息，url: ' + file.url() + ', width: ' + file.metaData('duration'));
+          break;
+        case AV.LocationMessage.TYPE:
+          var location = message.getLocation();
+          console.log('收到位置消息，latitude: ' + location.latitude + ', longitude: ' + location.longitude);
+          break;
+        default:
+          if (message.content._lcfile.url) {
+            messageContentText = message.content._lctext;
+            messageImageUrl = message.content._lcfile.url;
+          }
+          console.warn('收到未知类型消息');
+      }
       return msg;
     }
   } //chatBoardUIController

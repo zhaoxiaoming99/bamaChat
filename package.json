@@ -11,7 +11,7 @@
     "bower-nexus3-resolver": "^1.0.1"
   },
   "scripts": {
-    "start": "http-server ./app -a 161.92.174.159 -p 8888 -c-1",
+    "start": "http-server ./app -a localhost -p 8888 -c-1",
     "preupdate-webdriver": "npm install",
     "update-webdriver": "webdriver-manager update",
     "preprotractor": "npm run update-webdriver",

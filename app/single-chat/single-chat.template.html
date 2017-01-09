@@ -4,8 +4,7 @@
 			<label for="senderSelect"> 你是谁: </label>
 		</div>
 		<div>
-			<select name="senderSelect" id="senderSelect" ng-model="vm.sender">
-		      <option value="">---Please select---</option> <!-- not selected / blank option -->
+			<select name="senderSelect" id="senderSelect" ng-model="vm.chatContext.sender">
 		      <option value="Tod">Tod</option>
 		      <option value="Judy">Judy</option>
 		      <option value="Xiaoming">Xiaoming</option>
@@ -18,8 +17,7 @@
 			<label for="receiverSelect"> 找谁聊天: </label>
 		</div>
 		<div>
-			<select name="receiverSelect" id="receiverSelect" ng-model="vm.receiver">
-		      <option value="">---Please select---</option> <!-- not selected / blank option -->
+			<select name="receiverSelect" id="receiverSelect" ng-model="vm.chatContext.members[0]">
 		      <option value="Tod">Tod</option>
 		      <option value="Judy">Judy</option>
 		      <option value="Xiaoming">Xiaoming</option>
@@ -34,7 +32,7 @@
 	</div>
 </div>
 <hr>
-<chat-board-ui chat-context="vm.chatContext" ng-if='vm.isReady'>
+<chat-board-ui chat-context="vm.chatContext">
 <!-- <div ng-if='vm.showTom' style="float: left;width: 100%;">
 	<chat-board-ui chat-context="vm.chatContext" /></div>
 <div ng-if='vm.showJerry' style="float: right;width: 100%;">

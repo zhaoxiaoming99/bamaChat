@@ -20,23 +20,49 @@
 
   function chatBoardUIController($scope) {
     var vm = this;
-    vm.title = 'chat';
     vm.apiNotReady = true; // if the leancloud API is ready to send message
     vm.txtMsg = '';
     vm.imgMsg = '';
-    vm.sender = $scope.chatContext.sender;
-    vm.members = $scope.chatContext.members;
+    vm.chatContext = $scope.chatContext;
     vm.msgList = [];
     vm.historyMsgList = [];
     vm.hasHistoryMsg = false;
     vm.sendTextMsg = sendTextMsg;
     vm.sendImgMsg = sendImgMsg;
-    init();
 
-
+    // ========================================================
     var conversationAPI;
+    var imClient;
+    console.log('chatBoardUIController.instantiation...');
+
+    $scope.$watch('vm.chatContext', function() {
+      if (vm.chatContext.members.length === 1 && vm.chatContext.sender === vm.chatContext.members[0]) {
+        console.log('Error: 发信人和收信人不能是同一个人！');
+        return;
+      }
+      init();
+    }, true);
+
 
     function init() {
+      vm.apiNotReady = true;
+      vm.msgList = [];
+      vm.historyMsgList = [];
+
+      if (imClient) {
+        console.log(imClient.id, '已经登录，需要先退出当前登录用户...')
+        imClient.close().then(function() {
+          console.log('已退出登录');
+          initContext();
+        }).catch(console.error.bind(console));
+      } else {
+        initContext();
+      }
+    }
+
+
+    function initContext() {
+      console.log("初始化API...");
       // 初始化存储 SDK
       AV.init({
         appId: 'a7722WJjRqpbSOQprmljvReW-gzGzoHsz',
@@ -51,13 +77,15 @@
       });
 
       // Tom 用自己的名字作为 clientId，获取 IMClient 对象实例
-      realtime.createIMClient(vm.sender).then(function(clientObj) {
+      realtime.createIMClient(vm.chatContext.sender).then(function(clientObj) {
         // add message receive callback
-        clientObj.on('message', receiveMsg);
+        imClient = clientObj;
+        console.log(imClient.id, '登录成功！');
+        imClient.on('message', receiveMsg);
         // 创建与Jerry之间的对话
-        return clientObj.createConversation({
-          members: vm.members,
-          name: vm.members.join(" & "),
+        return imClient.createConversation({
+          members: vm.chatContext.members,
+          name: vm.chatContext.members.join(" & "),
           transient: false,
           unique: true
         });
@@ -86,7 +114,7 @@
         return;
       }
       conversationAPI.send(new AV.TextMessage(vm.txtMsg)).then(function(message) {
-        console.log(vm.sender + ' send Message: ' + vm.txtMsg);
+        console.log(vm.chatContext.sender + ' send Message: ' + vm.txtMsg);
         vm.txtMsg = '';
         $scope.$apply(function() {
           vm.msgList.push(composeMsg(message));
@@ -100,7 +128,8 @@
         return;
       }
 
-      var file = new AV.File.withURL('百度', 'http://img0.bdstatic.com/static/searchresult/img/logo-2X_b99594a.png');
+      var file = new AV.File.withURL('百度',
+        'http://img0.bdstatic.com/static/searchresult/img/logo-2X_b99594a.png');
       file.save().then(function() {
         var message = new AV.ImageMessage(file);
         message.setText('百度logo');
@@ -123,13 +152,13 @@
       };
       msg.id = message.id;
       msg.from = message.from;
-      msg.isReceiver = !(msg.from === vm.sender);
+      msg.isReceiver = !(msg.from === vm.chatContext.sender);
       msg.text = msg.from + ' said:' + message.text;
 
       var file;
       switch (message.type) {
         case AV.TextMessage.TYPE:
-          console.log('收到文本消息， text: ' + message.getText() + ', msgId: ' + message.id);
+          //console.log('收到文本消息， text: ' + message.getText() + ', msgId: ' + message.id);
           break;
         case AV.FileMessage.TYPE:
           file = message.getFile(); // file 是 AV.File 实例

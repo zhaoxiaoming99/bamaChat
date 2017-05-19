@@ -1,22 +1,22 @@
 <div style="padding: 10px 10px;">
-	<p class="chatWith">chat context: {{chatContext}}</p>
+  <p class="chatWith">chat context: {{chatContext}}</p>
 
-	<div>
-		<p class='message-tips'>历史消息</p>
-		<div ng-repeat="msg in vm.historyMsgList">
-			<div class="message-base" ng-class="{'message-receiver': msg.isReceiver}">
-				{{msg.text}}
-				<div ng-if='msg.hasImage'><img ng-src='{{msg.messageImageUrl}}'></div>
-			</div>
-		</div>
-		<p class='message-tips'>华丽的分割线</p>
-	</div>
-	<div ng-repeat="msg in vm.msgList">
-		<div class="message-base" ng-class="{'message-receiver': msg.isReceiver}">{{msg.text}}</div>
-	</div>
-	<input type="text" style="width: 100%;" ng-disabled="vm.apiNotReady" ng-model='vm.txtMsg' required ng-trim='true' ng-keyup='$event.keyCode == 13 && vm.sendTextMsg()' />
-	<!-- <input type="text" style="width: 100%;" ng-model='vm.imgMsg' required ng-trim='true' ng-keyup='$event.keyCode == 13 && vm.sendImgMsg()' /> -->
-	<!-- <input type="button" value="Send" ng-click='vm.send()' > -->
+  <div>
+    <p class='message-tips'>历史消息</p>
+    <div ng-repeat="msg in vm.historyMsgList">
+      <div class="message-base" ng-class="{'message-receiver': msg.isReceiver}">
+        {{msg.text}}
+        <div ng-if='msg.hasImage'><img ng-src='{{msg.messageImageUrl}}'></div>
+      </div>
+    </div>
+    <p class='message-tips'>华丽的分割线</p>
+  </div>
+  <div ng-repeat="msg in vm.msgList">
+    <div class="message-base" ng-class="{'message-receiver': msg.isReceiver}">{{msg.text}}</div>
+  </div>
+  <input type="text" style="width: 100%;" ng-disabled="vm.apiNotReady" ng-model='vm.txtMsg' required ng-trim='true' ng-keyup='$event.keyCode == 13 && vm.sendTextMsg()' />
+  <!-- <input type="text" style="width: 100%;" ng-model='vm.imgMsg' required ng-trim='true' ng-keyup='$event.keyCode == 13 && vm.sendImgMsg()' /> -->
+  <!-- <input type="button" value="Send" ng-click='vm.send()' > -->
 </div>
 
 

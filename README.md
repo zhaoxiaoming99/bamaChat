@@ -1,3 +1,13 @@
+comments by xiaoming.zhao
+HOW TO START APP:
+start: npm start
+
+The full tutorial can be found at 
+https://docs.angularjs.org/tutorial.
+
+
+
+
 # AngularJS Phone Catalog Tutorial Application
 
 
@@ -8,8 +18,6 @@ AngularJS. The application is loosely based on the **Google Phone Gallery**, whi
 Here is a historical reference: [Google Phone Gallery on WayBack][google-phone-gallery]
 
 Each tagged commit is a separate lesson teaching a single aspect of the framework.
-
-The full tutorial can be found at https://docs.angularjs.org/tutorial.
 
 
 ## Prerequisites

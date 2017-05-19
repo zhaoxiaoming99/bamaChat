@@ -1,15 +1,11 @@
-comments by xiaoming.zhao
-HOW TO START APP:
-start: npm start
-
-The full tutorial can be found at 
-https://docs.angularjs.org/tutorial.
-
-
-
 
 # AngularJS Phone Catalog Tutorial Application
 
+## HOW TO START APP:
+start: npm start
+
+## The full tutorial can be found at 
+https://docs.angularjs.org/tutorial.
 
 ## Overview
 

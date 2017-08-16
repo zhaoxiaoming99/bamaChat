@@ -7,6 +7,9 @@ start: npm start
 ## The full tutorial can be found at 
 https://docs.angularjs.org/tutorial.
 
+## The original artical can be found at
+https://github.com/angular/angular-phonecat
+
 ## Overview
 
 This application takes the developer through the process of building a web-application using
